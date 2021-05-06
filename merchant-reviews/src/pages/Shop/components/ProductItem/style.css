@@ -1,0 +1,16 @@
+.discount__num {
+  position: absolute;
+  bottom: 1px;
+  left: 0;
+  z-index: 999;
+  color: #fff;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0,0,0,.5);
+}
+.discount__itemPic {
+  position: relative;
+}
+.discount__itemTitle {
+  text-align: center;
+}
