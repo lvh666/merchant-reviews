@@ -17,13 +17,14 @@ interface CommentParems {
 export interface CommentModelState {
   isFetching: boolean;
   msg: string;
-  comments?: Array<CommentParems>;
+  comments: Array<CommentParems>;
   pic?: any;
 }
 
 const initialState = {
   isFetching: false,
   msg: '',
+  comments: [],
 };
 
 export interface CommentModelType {
@@ -51,6 +52,7 @@ const CommentModel: CommentModelType = {
   state: {
     isFetching: false,
     msg: '',
+    comments: [],
   },
 
   effects: {

@@ -1,13 +1,32 @@
-import React from 'react';
+import comment from '@/models/comment';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch, CommentModelState } from 'umi';
 import CommentDesc from '../CommentDesc';
 import './style.css';
 
 interface CommentProps {
+  id: string;
   num: number;
   showComment: (url: string) => void;
 }
 
-const index: React.FC<CommentProps> = ({ num, showComment }) => {
+const index: React.FC<CommentProps> = ({ id, num, showComment }) => {
+  const dispatch = useDispatch();
+  const comments = useSelector(
+    ({ comment }: { comment: CommentModelState }) => comment.comments,
+  );
+  console.log(comments)
+
+  useEffect(() => {
+    dispatch({
+      type: 'comment/getComment',
+      payload: {
+        shopId: id,
+        rowIndex: 0,
+      },
+    });
+  }, []);
+
   return (
     <div className="detail">
       <div className="detail__more">
@@ -18,8 +37,18 @@ const index: React.FC<CommentProps> = ({ num, showComment }) => {
           onClick={() => showComment('commentList')}
         />
       </div>
-      <CommentDesc flag={false} showComment={showComment} />
-      <CommentDesc flag showComment={showComment} />
+      {comments.map((comment, index) => {
+        if (index < 2) {
+          return (
+            <CommentDesc
+              key={comment.id}
+              data={comment}
+              flag={!!index}
+              showComment={showComment}
+            />
+          );
+        }
+      })}
     </div>
   );
 };

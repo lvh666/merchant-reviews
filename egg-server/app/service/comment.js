@@ -10,7 +10,13 @@ class CommentService extends Service {
    */
   async getAllCommentByShopId(payload) {
     const results = await this.app.mysql.get('comment', { shop_id: payload.shopId });
-    return results;
+    const user = await this.app.mysql.get('user', { id: results.user_id });
+    results.user = user;
+    const pic = await this.app.mysql.get('pic_comment', { comment_id: results.id });
+    const img = [].concat(pic || undefined);
+    results.img = img;
+    const res = [].concat(results || undefined);
+    return res;
   }
   /**
    * 评论

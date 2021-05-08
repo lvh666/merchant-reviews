@@ -60,7 +60,7 @@ const index = () => {
       <ShopOverview pic={data.shop.pic} />
       <ShopInfo data={data.shop} />
       <ProductItem data={data.discount} showDiscount={goAddresses} />
-      <Detail showComment={goAddresses} num={data.shop.comment_quantity} />
+      <Detail id={id} showComment={goAddresses} num={data.shop.comment_quantity} />
       {!!localStorage.getItem('login') && msg === '用户未评论' && (
         <ShopBottom addComment={goAddresses} />
       )}
