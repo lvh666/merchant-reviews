@@ -18,9 +18,9 @@ module.exports = {
     },
   },
   addOrderRequest: {
-    userId: {
-      type: 'number',
-      description: '用户ID',
+    username: {
+      type: 'string',
+      description: '用户名',
       required: true,
       example: 0,
     },
@@ -30,7 +30,7 @@ module.exports = {
       required: true,
       example: 0,
     },
-    peoductId: {
+    productId: {
       type: 'number',
       description: '商品ID',
       required: true,
@@ -38,7 +38,19 @@ module.exports = {
     },
     price: {
       type: 'number',
-      description: '总价',
+      description: '单价',
+      required: true,
+      example: 0,
+    },
+    num: {
+      type: 'number',
+      description: '数量',
+      required: true,
+      example: 0,
+    },
+    createTime: {
+      type: 'number',
+      description: '创建时间',
       required: true,
       example: 0,
     },

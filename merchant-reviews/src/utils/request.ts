@@ -12,7 +12,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   (config) => {
-    const arr = ['user', 'comment', 'uploadPic', 'shop']
+    const arr = ['user', 'comment', 'uploadPic', 'shop', 'order']
     const url = config.url as string
     const token = localStorage.getItem('token')
     if (arr.includes(url.split('/')[1])) {

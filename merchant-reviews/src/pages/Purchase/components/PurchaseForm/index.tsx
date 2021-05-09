@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import "./style.css";
 
-const index = () => {
-  const handleDecrease = () => {};
+interface TipProps {
+  num: number;
+  price: number;
+  handleClick: (num: number) => void;
+}
 
-  const handleIncrease = () => {};
+const index: React.FC<TipProps> = (props) => {
+  const { num, price, handleClick } = props;
+  const [ number, setNumber ]= useState(num)
+  const handleDecrease = () => {
+    if (number > 1) setNumber((number) => number - 1)
+  };
 
-  const handleChange = () => {};
+  const handleIncrease = () => {
+    setNumber((number) => number + 1)
+  };
 
-  const handleClick = () => {};
   return (
     <div className="purchaseForm">
       <div className="purchaseForm__wrapper">
@@ -23,8 +32,7 @@ const index = () => {
             </span>
             <input
               className="purchaseForm__quantity"
-              onChange={handleChange}
-              value={0}
+              value={number}
             />
             <span
               className="purchaseForm__counter--inc"
@@ -37,12 +45,12 @@ const index = () => {
         <div className="purchaseForm__row">
           <div className="purchaseForm__rowLabel">小计</div>
           <div className="purchaseForm__rowValue">
-            <span className="purchaseForm__totalPrice">¥120.0</span>
+            <span className="purchaseForm__totalPrice">¥{ (number * price).toFixed(2) }</span>
           </div>
         </div>
         <div className="purchaseForm__row">
           <div className="purchaseForm__rowLabel">手机号码</div>
-          <div className="purchaseForm__rowValue">1101101100</div>
+          <div className="purchaseForm__rowValue">{localStorage.getItem('username')}</div>
         </div>
       </div>
       <ul className="purchaseForm__remark">
@@ -55,7 +63,7 @@ const index = () => {
           <span className="purchaseForm__desc">支持过期退</span>
         </li>
       </ul>
-      <a className="purchaseForm__submit" onClick={handleClick}>
+      <a className="purchaseForm__submit" onClick={() => handleClick(number)}>
         提交订单
       </a>
     </div>

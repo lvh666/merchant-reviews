@@ -41,7 +41,7 @@ const RecipeReviewCard: React.FC<CardContentProps> = ({ data }) => {
         id,
       },
     });
-    setGoods(() => goods + 1)
+    setGoods(() => goods + 1);
   };
 
   return (
@@ -64,11 +64,13 @@ const RecipeReviewCard: React.FC<CardContentProps> = ({ data }) => {
           ></i>
         </span>
       </CardActions>
-      <CardMedia
-        className={classes.media}
-        image={data.img[0].url}
-        title={data.img[0].id}
-      />
+      {data.img[0] && (
+        <CardMedia
+          className={classes.media}
+          image={data.img[0].url}
+          title={data.img[0].id}
+        />
+      )}
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {data.content}

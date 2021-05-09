@@ -18,12 +18,16 @@ class OrderService extends Service {
    * @return
    */
   async addOrder(payload) {
+    const user = await this.app.mysql.get('user', { username: payload.username });
     const res = await this.app.mysql.insert('order', {
-      user_id: payload.userId,
+      user_id: user.id,
       shop_id: payload.shopId,
-      product_id: payload.peoductId,
+      product_id: payload.productId,
       price: payload.price,
+      num: payload.num,
+      create_time: new Date(payload.createTime),
     });
+
     return res;
   }
 
