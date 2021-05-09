@@ -63,7 +63,7 @@ class CommentController extends Controller {
   * @description 更新评论
   * @router put /comment/Item
   * @request body updateCommentRequest *body
-  * @response 200 baseResponse 获取成功
+  * @response 200 baseResponse 更新成功
   */
   async updateComment() {
     const { ctx, service } = this;
@@ -73,8 +73,29 @@ class CommentController extends Controller {
     const payload = ctx.request.body || {};
     // 调用 Service 进行业务处理
     const res = await service.comment.updateComment(payload);
+    const msg = res.affectedRows === 1 ? '更新成功' : '更新失败';
     // 设置响应内容和响应状态码
-    ctx.helper.success({ ctx, res });
+    ctx.helper.success({ ctx, res: null, msg });
+  }
+
+  /**
+  * @summary 更新评论点赞数
+  * @description 更新评论点赞数
+  * @router put /comment/addGoods
+  * @request body addCommentGoodsRequest *body
+  * @response 200 baseResponse 更新成功
+  */
+  async addCommentGoods() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.addCommentGoodsRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.comment.addCommentGoods(payload);
+    const msg = res.affectedRows === 1 ? '更新成功' : '更新失败';
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res: null, msg });
   }
 
   /**

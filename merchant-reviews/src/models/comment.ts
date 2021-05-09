@@ -5,6 +5,7 @@ import {
   getComment,
   uploadPicItem,
   checkComment,
+  countCommentGoods,
 } from '@/services/comment';
 import { message } from 'antd';
 
@@ -36,11 +37,13 @@ export interface CommentModelType {
     addComment: Effect;
     uploadPic: Effect;
     isComment: Effect;
+    addCommentGoods: Effect;
   };
   reducers: {
     getItem: Reducer<CommentModelState>;
     changeState: Reducer<CommentModelState>;
     addPic: Reducer<CommentModelState>;
+    changeComment: Reducer<CommentModelState>;
     // 启用 immer 之后
     // save: ImmerReducer<IndexModelState>;
   };
@@ -119,6 +122,16 @@ const CommentModel: CommentModelType = {
         },
       });
     },
+    *addCommentGoods({ payload }, { call, put }) {
+      const { id } = payload;
+      const response = yield call(countCommentGoods, { id });
+      yield put({
+        type: 'changeState',
+        payload: {
+          msg: response.msg,
+        },
+      });
+    },
   },
   reducers: {
     getItem(state = initialState, { payload }) {
@@ -140,6 +153,13 @@ const CommentModel: CommentModelType = {
         ...state,
         isFetching: false,
         pic: payload.pic,
+      };
+    },
+    changeComment(state = initialState, { payload }) {
+      return {
+        ...state,
+        isFetching: true,
+        msg: payload.msg,
       };
     },
   },

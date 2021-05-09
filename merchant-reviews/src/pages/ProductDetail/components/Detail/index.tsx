@@ -1,7 +1,20 @@
 import React from 'react';
 import './style.css';
+interface ProductProps {
+  data: {
+    id: number;
+    product: string;
+    old_price: number;
+    current_price: number;
+    picture: string;
+    sale_desc: string;
+    tag: string;
+    create_time: string;
+    shop_id: number;
+  };
+}
 
-const index = () => {
+const index: React.FC<ProductProps> = ({ data }) => {
   return (
     <div className="detail">
       <div className="detail__header">
@@ -16,9 +29,9 @@ const index = () => {
             </th>
           </tr>
           <tr className="detail__row">
-            <td>白果香（冷饮）</td>
-            <td className="detail__td--alignRight">1扎</td>
-            <td className="detail__td--alignRight">48元</td>
+            <td>{data.product}</td>
+            <td className="detail__td--alignRight">1</td>
+            <td className="detail__td--alignRight">{data.old_price}元</td>
           </tr>
           <tr className="detail__row">
             <td />
@@ -28,19 +41,16 @@ const index = () => {
               <strong className="detail__td--priceNew">团购价</strong>
             </td>
             <td className="detail__td--price">
-              48元
+              {data.old_price}元
               <br />
-              <strong className="detail__td--priceNew">19.9元</strong>
+              <strong className="detail__td--priceNew">
+                {data.current_price}元
+              </strong>
             </td>
           </tr>
         </tbody>
       </table>
       <div className="detail__remark">免费提供餐巾纸</div>
-      <div className="detail__more">
-        <span>更多图文详情</span>
-        <span className="detail__notice">(建议Wifi环境下打卡，土豪请随意)</span>
-        <i className="detail__arrow" />
-      </div>
     </div>
   );
 };

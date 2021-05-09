@@ -53,6 +53,14 @@ export function addComment({
   });
 }
 
+export function countCommentGoods({
+  id
+}: { id:string }) {
+  return request.post(`/comment/addGoods`, {
+    id
+  });
+}
+
 export function checkComment({ username, id }: { username: string, id: number }) {
   return request.post(`/comment/checkComment`, {
     username,

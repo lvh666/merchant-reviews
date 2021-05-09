@@ -76,12 +76,25 @@ class CommentService extends Service {
    * @return
    */
   async updateComment(payload) {
-    const res = await this.app.mysql.update('comment', {
+    const comment = await this.app.mysql.get('comment', {
       id: payload.id,
-      user_id: payload.userId,
-      shop_id: payload.shopId,
-      comment: payload.comment,
     });
+    comment.comment = payload.comment;
+    const res = await this.app.mysql.update('comment', comment);
+    return res;
+  }
+
+  /**
+   * 更新评论点赞数
+   * @param {*} payload
+   * @return
+   */
+  async addCommentGoods(payload) {
+    const comment = await this.app.mysql.get('comment', {
+      id: payload.id,
+    });
+    comment.goods += 1;
+    const res = await this.app.mysql.update('comment', comment);
     return res;
   }
 

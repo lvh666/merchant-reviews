@@ -30,6 +30,7 @@ module.exports = app => {
   router.get('/getAllCommentByShopId', controller.comment.getAllCommentByShopId);
   router.post('/comment/checkComment', jwt, controller.comment.CheckComment);
   router.post('/comment/Item', jwt, controller.comment.addComment);
+  router.post('/comment/addGoods', jwt, controller.comment.addCommentGoods);
   router.post('/uploadPic', controller.comment.upload);
   router.delete('/comment/Item', jwt, controller.comment.cancelComment);
   router.put('/comment/Item', jwt, controller.comment.updateComment);

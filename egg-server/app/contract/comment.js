@@ -1,6 +1,14 @@
 'use strict';
 
 module.exports = {
+  addCommentGoodsRequest: {
+    id: {
+      type: 'number',
+      description: 'ID',
+      required: true,
+      example: '',
+    },
+  },
   checkCommentRequest: {
     username: {
       type: 'string',

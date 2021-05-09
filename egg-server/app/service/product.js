@@ -10,7 +10,8 @@ class ProductService extends Service {
    */
   async getAllProductByShopId(payload) {
     const results = await this.app.mysql.get('product', { shop_id: payload.shopId });
-    return results;
+    const res = [].concat(results || []);
+    return res;
   }
   /**
    * 查询商品详情

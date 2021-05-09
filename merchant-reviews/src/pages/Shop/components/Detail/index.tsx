@@ -15,7 +15,6 @@ const index: React.FC<CommentProps> = ({ id, num, showComment }) => {
   const comments = useSelector(
     ({ comment }: { comment: CommentModelState }) => comment.comments,
   );
-  console.log(comments)
 
   useEffect(() => {
     dispatch({

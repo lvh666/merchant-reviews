@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -8,12 +8,16 @@ import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
+import IconButton from '@material-ui/core/IconButton';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import { useDispatch } from 'umi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     media: {
       height: 0,
-      paddingTop: '25%', // 16:9
+      paddingTop: '56.25%', // 16:9
     },
     avatar: {
       backgroundColor: red[500],
@@ -23,16 +27,23 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface CardContentProps {
   data: any;
-  flag: boolean;
-  showComment: (url: string) => void;
 }
 
-const RecipeReviewCard: React.FC<CardContentProps> = ({
-  data,
-  flag,
-  showComment,
-}) => {
+const RecipeReviewCard: React.FC<CardContentProps> = ({ data }) => {
   const classes = useStyles();
+  const [goods, setGoods] = useState(data.goods);
+  const dispatch = useDispatch();
+
+  const addLikes = (id: string) => {
+    dispatch({
+      type: 'comment/addCommentGoods',
+      payload: {
+        id,
+      },
+    });
+    setGoods(() => goods + 1)
+  };
+
   return (
     <Card>
       <CardHeader
@@ -53,28 +64,29 @@ const RecipeReviewCard: React.FC<CardContentProps> = ({
           ></i>
         </span>
       </CardActions>
-      {data.img[0] && (
-        <CardMedia
-          className={classes.media}
-          image={data.img[0]?.url}
-          title={data.img[0]?.id}
-        />
-      )}
+      <CardMedia
+        className={classes.media}
+        image={data.img[0].url}
+        title={data.img[0].id}
+      />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {data.content}
         </Typography>
-        <span>浏览{data.view} </span>
-        <span>赞{data.goods}</span>
       </CardContent>
-      {flag && (
-        <div
-          className="detail__more"
-          onClick={() => showComment('commentList')}
+      <CardActions disableSpacing>
+        <IconButton aria-label="view users" disabled>
+          <VisibilityIcon />
+          {data.view}
+        </IconButton>
+        <IconButton
+          aria-label="add to favorites"
+          onClick={() => addLikes(data.id)}
         >
-          <span>查看更多</span>
-        </div>
-      )}
+          <FavoriteIcon />
+          {goods}
+        </IconButton>
+      </CardActions>
     </Card>
   );
 };

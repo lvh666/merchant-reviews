@@ -1,7 +1,12 @@
 import React from 'react';
 import './style.css';
 
-const index = () => {
+interface RemarkProps {
+  startTime: string;
+  endTime: string;
+}
+
+const index: React.FC<RemarkProps> = ({ startTime, endTime }) => {
   return (
     <div className="remark">
       <div className="remark__header">
@@ -11,7 +16,7 @@ const index = () => {
       <div className="remark__list">
         <dl className="remark__item">
           <dt className="remark__itemTitle">有效期</dt>
-          <dd className="remark__itemDesc">2018-10-20至2019-09-15</dd>
+          <dd className="remark__itemDesc">{startTime && startTime.slice(0, 10)}至{endTime && endTime.slice(0, 10)}</dd>
         </dl>
         <dl className="remark__item">
           <dt className="remark__itemTitle">除外日期</dt>

@@ -54,7 +54,8 @@ class ShopService extends Service {
    */
   async getAllDiscount(payload) {
     const results = await this.app.mysql.get('discount_product', { shop_id: payload.id });
-    return results;
+    const res = [].concat(results || []);
+    return res;
   }
 
   /**

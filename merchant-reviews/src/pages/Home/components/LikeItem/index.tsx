@@ -28,7 +28,7 @@ const index: React.FC<likeItemProps> = (props) => {
   } = props.data;
 
   return (
-    <Link to={`/productDetail?id=${id}`} className="likeItem">
+    <Link to={`/shop/${id}`} className="likeItem">
       <div className="likeItem__picContainer">
         <div className="likeItem__picTag">{category}</div>
         <img className="likeItem__pic" src={pic} />
