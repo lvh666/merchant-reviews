@@ -2,15 +2,15 @@
 
 module.exports = {
   getAllOrderRequest: {
-    userId: {
-      type: 'number',
+    username: {
+      type: 'string',
       description: '用户ID',
       required: true,
       example: 0,
     },
   },
   orderRequest: {
-    orderId: {
+    id: {
       type: 'number',
       description: '订单ID',
       required: true,
@@ -51,6 +51,12 @@ module.exports = {
     createTime: {
       type: 'number',
       description: '创建时间',
+      required: true,
+      example: 0,
+    },
+    pic: {
+      type: 'string',
+      description: '图片',
       required: true,
       example: 0,
     },

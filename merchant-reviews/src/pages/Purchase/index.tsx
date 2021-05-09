@@ -40,6 +40,7 @@ const index = () => {
         productId: product.id,
         price: product.current_price,
         num,
+        pic: product.picture,
       },
     });
     setIsShow(true);

@@ -9,7 +9,16 @@ class OrderService extends Service {
    * @return
    */
   async getAllOrderByUserId(payload) {
-    const results = await this.app.mysql.get('order', { user_id: payload.userId });
+    const user = await this.app.mysql.get('user', { username: payload.username });
+    const results = await this.app.mysql.select('order', {
+      where: { user_id: user.id },
+      limit: 100,
+      offset: 0,
+    });
+    for (const result of results) {
+      const product = await this.app.mysql.get('product', { id: result.product_id });
+      result.product = product;
+    }
     return results;
   }
   /**
@@ -26,6 +35,7 @@ class OrderService extends Service {
       price: payload.price,
       num: payload.num,
       create_time: new Date(payload.createTime),
+      pic: payload.pic,
     });
 
     return res;
@@ -37,7 +47,9 @@ class OrderService extends Service {
    * @return
    */
   async cancelOrder(payload) {
-    const res = await this.app.mysql.delete('order', payload);
+    const order = await this.app.mysql.get('order', { id: payload.id });
+    order.state = 2;
+    const res = await this.app.mysql.update('order', order);
     return res;
   }
 

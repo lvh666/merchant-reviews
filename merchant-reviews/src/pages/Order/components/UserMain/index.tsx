@@ -1,5 +1,6 @@
 import React, { memo, useState } from 'react';
 import OrderItem from '../OrderItem';
+import { useDispatch } from 'umi';
 import './style.css';
 
 const data = [
@@ -18,21 +19,37 @@ const data = [
 const tabTitles = ['全部订单', '待付款', '可使用', '退款/售后'];
 
 interface DataArray {
-  id: string;
-  statusText: string;
-  orderPicUrl: string;
-  channel: string;
-  title: string;
-  text: string[];
-  type: number;
+  id: number;
+  state: number;
+  pic: string;
+  num: number;
+  price: number;
+  product: any;
 }
 
-const index = memo(() => {
+interface OrderListProps {
+  dataSource: Array<DataArray>;
+}
+
+const index: React.FC<OrderListProps> = memo(({dataSource}) => {
   const [currentTab, setCurrentTab] = useState(0);
-  
-  const renderOrderList = (data: Array<DataArray>) => {
+  const dispatch = useDispatch();
+
+  const cancelOrder = (id: number) => {
+    dispatch({
+      type: 'order/delOrder',
+      payload: {
+        id,
+        data: dataSource,
+      },
+    });
+  };
+
+  const renderOrderList = () => {
+    let data = dataSource || [];
+    if (dataSource && currentTab > 0) data = dataSource.filter(data => data.state + 1 === currentTab)
     return data.map((item) => {
-      return <OrderItem key={item.id} data={item} />;
+      return <OrderItem key={item.id} data={item} cancelOrder={cancelOrder} />;
     });
   };
 
@@ -47,8 +64,9 @@ const index = memo(() => {
   };
 
   const handleClickTab = (index: number) => {
-    setCurrentTab(index);
+    setCurrentTab(() => index);
   };
+
   return (
     <div className="userMain">
       <div className="userMain__menu">
@@ -73,7 +91,7 @@ const index = memo(() => {
         })}
       </div>
       <div className="userMain__content">
-        {data && data.length > 0 ? renderOrderList(data) : renderEmpty()}
+        {data && data.length > 0 ? renderOrderList() : renderEmpty()}
       </div>
     </div>
   );

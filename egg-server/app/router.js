@@ -22,9 +22,9 @@ module.exports = app => {
 
   // 订单
   router.post('/getOrderById', jwt, controller.order.getOrderById);
-  router.post('/getAllOrderByUserId', jwt, controller.order.getAllOrderByUserId);
+  router.post('/order/getAllOrder', jwt, controller.order.getAllOrderByUserId);
   router.post('/order/Item', jwt, controller.order.addOrder);
-  router.delete('/order/Item', jwt, controller.order.cancelOrder);
+  router.put('/order/Item', jwt, controller.order.cancelOrder);
 
   // 评论
   router.get('/getAllCommentByShopId', controller.comment.getAllCommentByShopId);

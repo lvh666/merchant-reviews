@@ -53,9 +53,12 @@ class ShopService extends Service {
    * @return
    */
   async getAllDiscount(payload) {
-    const results = await this.app.mysql.get('discount_product', { shop_id: payload.id });
-    const res = [].concat(results || []);
-    return res;
+    const results = await this.app.mysql.select('discount_product', {
+      where: { shop_id: payload.id },
+      limit: 100,
+      offset: 0,
+    });
+    return results;
   }
 
   /**

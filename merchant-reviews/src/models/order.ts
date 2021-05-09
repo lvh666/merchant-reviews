@@ -1,15 +1,13 @@
 import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
-import { getAllProductById, addOrder } from '@/services/order';
+import { getAllOrderByUserId, addOrder, cancelOrder } from '@/services/order';
 
 export interface OrderModelState {
   isFetching: boolean;
-  pageCount: number;
   data: any[];
 }
 
 const initialState = {
   isFetching: false,
-  pageCount: 0,
   data: [],
 };
 
@@ -17,8 +15,9 @@ export interface OrderModelType {
   namespace: 'order';
   state: OrderModelState;
   effects: {
-    loadLikes: Effect;
+    getOrder: Effect;
     createOrder: Effect;
+    delOrder: Effect;
   };
   reducers: {
     setItem: Reducer<OrderModelState>;
@@ -31,18 +30,17 @@ const OrderModel: OrderModelType = {
 
   state: {
     isFetching: false,
-    pageCount: 0,
     data: [],
   },
 
   effects: {
     // 加载产品数据
-    *loadLikes({ payload }, { call, put }) {
-      const { id } = payload;
-      const response = yield call(getAllProductById, { id });
-      if (response.data.length) {
+    *getOrder({ payload }, { call, put }) {
+      const { username } = payload;
+      const response = yield call(getAllOrderByUserId, { username });
+      if (response.data) {
         yield put({
-          type: 'likes',
+          type: 'setItem',
           payload: {
             order: response.data,
           },
@@ -66,6 +64,30 @@ const OrderModel: OrderModelType = {
           msg: response.msg,
         },
       });
+    },
+    *delOrder({ payload }, { call, put }) {
+      const { id, data } = payload;
+      const response = yield call(cancelOrder, { id });
+      yield put({
+        type: 'setState',
+        payload: {
+          msg: response.msg,
+        },
+      });
+      if (response.msg === '取消成功') {
+        for (const item of data) {
+          if (item.id === id) {
+            item.state = 2;
+            break;
+          }
+        }
+        yield put({
+          type: 'setItem',
+          payload: {
+            order: data,
+          },
+        });
+      }
     },
   },
   reducers: {

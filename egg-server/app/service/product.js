@@ -9,9 +9,12 @@ class ProductService extends Service {
    * @return
    */
   async getAllProductByShopId(payload) {
-    const results = await this.app.mysql.get('product', { shop_id: payload.shopId });
-    const res = [].concat(results || []);
-    return res;
+    const results = await this.app.mysql.select('product', {
+      where: { shop_id: payload.shopId },
+      limit: 100,
+      offset: 0,
+    });
+    return results;
   }
   /**
    * 查询商品详情

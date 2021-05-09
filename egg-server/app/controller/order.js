@@ -49,7 +49,7 @@ class OrderController extends Controller {
   * @description 取消订单
   * @router delete /order/Item
   * @request body orderRequest *body
-  * @response 200 baseResponse 获取成功
+  * @response 200 baseResponse 取消成功
   */
   async cancelOrder() {
     const { ctx, service } = this;
@@ -59,8 +59,10 @@ class OrderController extends Controller {
     const payload = ctx.request.body || {};
     // 调用 Service 进行业务处理
     const res = await service.order.cancelOrder(payload);
-    // 设置响应内容和响应状态码
-    ctx.helper.success({ ctx, res });
+    // 判断注册成功
+    const msg = res.affectedRows === 1 ? '取消成功' : '取消失败';
+    // 正常应答
+    ctx.helper.success({ ctx, res: null, msg });
   }
 
   /**

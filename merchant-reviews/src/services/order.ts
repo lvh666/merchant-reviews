@@ -1,9 +1,4 @@
 import request from '@/utils/request';
-interface listParams {
-  rowIndex: number;
-  pageSize?: number;
-  keyWords?: string;
-}
 
 interface OrderParams {
   username: number;
@@ -12,12 +7,17 @@ interface OrderParams {
   price: number;
   num: number;
   createTime: number;
+  pic: string;
 }
 
-export function getAllProductById({ id }: { id: string }) {
-  return request.get(`/getAllProductById?shopId=${id}`);
+export function getAllOrderByUserId({ username }: { username: string }) {
+  return request.post(`/order/getAllOrder`, { username });
 }
 
 export function addOrder(data: OrderParams) {
   return request.post(`/order/Item`, data);
+}
+
+export function cancelOrder({ id }: { id: number }) {
+  return request.put(`/order/Item`, { id });
 }
