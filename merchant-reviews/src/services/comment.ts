@@ -22,10 +22,16 @@ export function uploadPicItem({ file }: { file: any }) {
   });
 }
 
-export function getComment({ shopId, rowIndex, pageSize = 10 }: listParams) {
-  return request.get(
-    `/getAllCommentByShopId?shopId=${shopId}&curPage=${rowIndex}&pageNum=${pageSize}`,
-  );
+export function getComments({ shopId }: listParams) {
+  return request.get(`/getAllCommentByShopId?shopId=${shopId}`);
+}
+
+export function getComment({ id }: { id: number }) {
+  return request.get(`/getComment?id=${id}`);
+}
+
+export function getUserComment({ username }: { username: string }) {
+  return request.post(`/comment/getItem`, { username });
 }
 
 export function changeComment({ id, start, content, files }: CommentParams) {
@@ -35,6 +41,10 @@ export function changeComment({ id, start, content, files }: CommentParams) {
     content,
     files,
   });
+}
+
+export function delComment({ id }: CommentParams) {
+  return request.delete(`/comment/Item?id=${id}`);
 }
 
 export function addComment({
@@ -53,17 +63,21 @@ export function addComment({
   });
 }
 
-export function countCommentGoods({
-  id
-}: { id:string }) {
+export function countCommentGoods({ id }: { id: string }) {
   return request.post(`/comment/addGoods`, {
-    id
+    id,
   });
 }
 
-export function checkComment({ username, id }: { username: string, id: number }) {
+export function checkComment({
+  username,
+  id,
+}: {
+  username: string;
+  id: number;
+}) {
   return request.post(`/comment/checkComment`, {
     username,
-    id
+    id,
   });
 }

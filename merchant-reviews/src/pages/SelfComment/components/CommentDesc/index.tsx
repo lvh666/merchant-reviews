@@ -12,6 +12,7 @@ import { red } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch } from 'umi';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -23,14 +24,21 @@ const useStyles = makeStyles((theme: Theme) =>
     avatar: {
       backgroundColor: red[500],
     },
+    expand: {
+      marginLeft: 'auto',
+    },
   }),
 );
 
 interface CardContentProps {
   data: any;
+  delComments: (id: number) => void;
 }
 
-const RecipeReviewCard: React.FC<CardContentProps> = ({ data }) => {
+const RecipeReviewCard: React.FC<CardContentProps> = ({
+  data,
+  delComments,
+}) => {
   const classes = useStyles();
   const [goods, setGoods] = useState(data.goods);
   const dispatch = useDispatch();
@@ -93,6 +101,13 @@ const RecipeReviewCard: React.FC<CardContentProps> = ({ data }) => {
         >
           <FavoriteIcon />
           {goods}
+        </IconButton>
+        <IconButton
+          className={classes.expand}
+          onClick={() => delComments(data.id)}
+          aria-label="del"
+        >
+          <DeleteIcon />
         </IconButton>
       </CardActions>
     </Card>

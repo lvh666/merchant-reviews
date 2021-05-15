@@ -4,7 +4,7 @@ const { Service } = require('egg');
 
 class CommentService extends Service {
   /**
-   * 获取评论
+   * 通过餐馆ID获取评论
    * @param {*} payload
    * @return
    */
@@ -26,18 +26,67 @@ class CommentService extends Service {
     }
     return results;
   }
+
+  /**
+   * 获取评论
+   * @param {*} payload
+   * @return
+   */
+  async getComment(payload) {
+    const res = await this.app.mysql.get('comment', { id: payload.id });
+    res.view += 1;
+    await this.app.mysql.update('comment', res);
+    const user = await this.app.mysql.get('user', { id: res.user_id });
+    res.user = user;
+    const pic = await this.app.mysql.select('pic_comment', {
+      where: { comment_id: res.id },
+      limit: 100,
+      offset: 0,
+    });
+    res.img = pic;
+    return res;
+  }
+
+  /**
+   * 根据用户ID获取评论
+   * @param {*} payload
+   * @return
+   */
+  async getAllCommentByUserId(payload) {
+    const user = await this.app.mysql.get('user', {
+      username: payload.username,
+    });
+    const results = await this.app.mysql.select('comment', {
+      where: { user_id: user.id },
+      limit: 100,
+      offset: 0,
+    });
+    for (const comment of results) {
+      comment.user = user;
+      const pic = await this.app.mysql.select('pic_comment', {
+        where: { comment_id: comment.id },
+        limit: 100,
+        offset: 0,
+      });
+      comment.img = pic;
+    }
+    return results;
+  }
   /**
    * 评论
    * @param {*} payload
    * @return
    */
   async addComment(payload) {
-    const user = await this.app.mysql.get('user', { username: payload.username });
+    const user = await this.app.mysql.get('user', {
+      username: payload.username,
+    });
     const res = await this.app.mysql.insert('comment', {
       user_id: user.id,
       shop_id: +payload.shopId,
       content: payload.content,
       start: +payload.start,
+      create_date: new Date(),
     });
     if (payload.files) {
       for (let i = 0; i < payload.files.length; i++) {
@@ -48,7 +97,9 @@ class CommentService extends Service {
       }
     }
 
-    let totalStar = await this.app.mysql.get('star_total', { shop_id: +payload.shopId });
+    let totalStar = await this.app.mysql.get('star_total', {
+      shop_id: +payload.shopId,
+    });
     if (totalStar) {
       totalStar.star_total += payload.start;
       await this.app.mysql.update('star_total', totalStar);
@@ -74,6 +125,15 @@ class CommentService extends Service {
    * @return
    */
   async cancelComment(payload) {
+    const comment = await this.app.mysql.get('comment', payload);
+    const shop = await this.app.mysql.get('shop', { id: comment.shop_id });
+    const totalStar = await this.app.mysql.get('star_total', {
+      shop_id: comment.shop_id,
+    });
+    totalStar.star_total -= comment.start;
+    shop.comment_quantity -= 1;
+    shop.star = totalStar.star_total / shop.comment_quantity;
+    await this.app.mysql.update('shop', shop);
     const res = await this.app.mysql.delete('comment', payload);
     return res;
   }
@@ -112,8 +172,13 @@ class CommentService extends Service {
    * @return
    */
   async CheckComment(payload) {
-    const user = await this.app.mysql.get('user', { username: payload.username });
-    const res = await this.app.mysql.get('comment', { user_id: user.id, shop_id: payload.id });
+    const user = await this.app.mysql.get('user', {
+      username: payload.username,
+    });
+    const res = await this.app.mysql.get('comment', {
+      user_id: user.id,
+      shop_id: payload.id,
+    });
     return res ? 1 : 0;
   }
 }

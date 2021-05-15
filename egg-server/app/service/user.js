@@ -11,7 +11,7 @@ class UserService extends Service {
   async registered(payload) {
     // 加密
     payload.password = await this.ctx.genHash(payload.password);
-
+    payload.create_time = new Date();
     const res = await this.app.mysql.insert('user', payload);
     return res;
   }

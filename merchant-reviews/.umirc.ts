@@ -19,6 +19,8 @@ export default defineConfig({
     { path: '/productList/:id', component: '@/pages/DisCountProducts' },
     { path: '/comment/:id', component: '@/pages/Comment' },
     { path: '/commentList/:id', component: '@/pages/CommentList' },
+    { path: '/comment/item/:id', component: '@/pages/CommentDetail' },
+    { path: '/selfComment', component: '@/pages/SelfComment' },
     { path: '/discount/:id', component: '@/pages/Discount' },
     { path: '/discount/add/:id', component: '@/pages/AddDiscount' },
   ],

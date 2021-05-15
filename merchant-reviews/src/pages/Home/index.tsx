@@ -12,9 +12,9 @@ const index = () => {
   return (
     <div>
       <HomeHeader />
-      {/* <Banner dark={true} /> */}
-      <Category />
-      <Discount />
+      <Banner dark={false} />
+      {/* <Category /> */}
+      {/* <Discount /> */}
       <LikeList />
       <Footer />
     </div>

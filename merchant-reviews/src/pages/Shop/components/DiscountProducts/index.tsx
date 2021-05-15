@@ -1,5 +1,5 @@
 import React from 'react';
-import DiscountInfo from '@/pages/DiscountProducts/components/DiscountInfo';
+import DiscountInfo from '@/pages/DisCountProducts/components/DiscountInfo';
 
 interface DiscountProps {
   data: any;

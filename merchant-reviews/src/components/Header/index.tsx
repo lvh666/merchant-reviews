@@ -12,7 +12,7 @@ const index: React.FC<HeaderProps> = (props) => {
   const backgroundColor = grey ? '#f0f0f0' : '#fff';
 
   return (
-    <header className="header" style={{ backgroundColor: backgroundColor }}>
+    <header className="headers" style={{ backgroundColor: backgroundColor }}>
       <div className="header__back" onClick={onBack}>
         返回
       </div>

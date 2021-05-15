@@ -1,5 +1,5 @@
 import React from 'react';
-import { history } from 'umi'
+import { history } from 'umi';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
+import './style.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

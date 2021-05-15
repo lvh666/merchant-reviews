@@ -67,7 +67,7 @@ export default function SimpleList() {
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem button onClick={() => toShow('/order')}>
+        <ListItem button onClick={() => toShow('/selfComment')}>
           <ListItemIcon>
             <ChatIcon />
           </ListItemIcon>

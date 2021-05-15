@@ -6,6 +6,9 @@ import {
   uploadPicItem,
   checkComment,
   countCommentGoods,
+  getUserComment,
+  delComment,
+  getComments,
 } from '@/services/comment';
 import { message } from 'antd';
 
@@ -18,6 +21,7 @@ interface CommentParems {
 export interface CommentModelState {
   isFetching: boolean;
   msg: string;
+  comment: CommentParems;
   comments: Array<CommentParems>;
   pic?: any;
 }
@@ -26,6 +30,11 @@ const initialState = {
   isFetching: false,
   msg: '',
   comments: [],
+  comment: {
+    id: 0,
+    comment: '',
+    pic: [],
+  },
 };
 
 export interface CommentModelType {
@@ -34,16 +43,20 @@ export interface CommentModelType {
   effects: {
     updateComment: Effect;
     getComment: Effect;
+    getCommentById: Effect;
+    getSelfComment: Effect;
     addComment: Effect;
     uploadPic: Effect;
     isComment: Effect;
     addCommentGoods: Effect;
+    cancelComments: Effect;
   };
   reducers: {
     getItem: Reducer<CommentModelState>;
     changeState: Reducer<CommentModelState>;
     addPic: Reducer<CommentModelState>;
     changeComment: Reducer<CommentModelState>;
+    setComment: Reducer<CommentModelState>;
     // 启用 immer 之后
     // save: ImmerReducer<IndexModelState>;
   };
@@ -56,6 +69,11 @@ const CommentModel: CommentModelType = {
     isFetching: false,
     msg: '',
     comments: [],
+    comment: {
+      id: 0,
+      comment: '',
+      pic: [],
+    },
   },
 
   effects: {
@@ -72,8 +90,28 @@ const CommentModel: CommentModelType = {
     },
     // 获取评论信息
     *getComment({ payload }, { call, put }) {
-      const { shopId, rowIndex } = payload;
-      const response = yield call(getComment, { shopId, rowIndex });
+      const { shopId } = payload;
+      const response = yield call(getComments, { shopId });
+      yield put({
+        type: 'getItem',
+        payload: {
+          comments: response.data,
+        },
+      });
+    },
+    *getCommentById({ payload }, { call, put }) {
+      const { id } = payload;
+      const response = yield call(getComment, { id });
+      yield put({
+        type: 'setComment',
+        payload: {
+          comment: response.data,
+        },
+      });
+    },
+    *getSelfComment({ payload }, { call, put }) {
+      const { username } = payload;
+      const response = yield call(getUserComment, { username });
       yield put({
         type: 'getItem',
         payload: {
@@ -113,7 +151,7 @@ const CommentModel: CommentModelType = {
       const { username, id } = payload;
       const response = yield call(checkComment, {
         username,
-        id
+        id,
       });
       yield put({
         type: 'changeState',
@@ -131,6 +169,22 @@ const CommentModel: CommentModelType = {
           msg: response.msg,
         },
       });
+    },
+    *cancelComments({ payload }, { call, put }) {
+      const { id, comments } = payload;
+
+      const response = yield call(delComment, { id });
+      if (response.msg === '取消成功') {
+        const ans = comments.filter((comment: CommentParems) => comment.id != id);
+        yield put({
+          type: 'getItem',
+          payload: {
+            comments: ans,
+          },
+        });
+      } else {
+        message.error(response.msg);
+      }
     },
   },
   reducers: {
@@ -160,6 +214,13 @@ const CommentModel: CommentModelType = {
         ...state,
         isFetching: true,
         msg: payload.msg,
+      };
+    },
+    setComment(state = initialState, { payload }) {
+      return {
+        ...state,
+        isFetching: true,
+        comment: payload.comment,
       };
     },
   },

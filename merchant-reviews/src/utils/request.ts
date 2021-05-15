@@ -30,9 +30,10 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     message.destroy();
-    if (response.data.status !== 0) {
-      if (response.data.status === 10) {
+    if (response.data.code === 401) {
+      if (response.data.error === 'jwt malformed') {
         message.warning('请先登录');
+        localStorage.removeItem('login')
         window.location.href = '/login';
       }
     }

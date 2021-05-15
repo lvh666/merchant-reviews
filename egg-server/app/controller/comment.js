@@ -24,6 +24,42 @@ class CommentController extends Controller {
   }
 
   /**
+     * @summary 根据用户ID查询评论
+     * @description 根据用户ID查询评论
+     * @router post /getAllCommentByUserId
+     * @request body checkCommentRequest *body
+     * @response 200 baseResponse 获取成功
+     */
+  async getAllCommentByUserId() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.checkCommentRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.comment.getAllCommentByUserId(payload);
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res });
+  }
+
+  /**
+     * @summary 查询评论
+     * @description 根查询评论
+     * @router post /getComment
+     * @request query number id ID
+     * @response 200 baseResponse 获取成功
+     */
+  async getComment() {
+    const { ctx, service } = this;
+    // 组装参数
+    const payload = { id: +ctx.query.id };
+    // 调用 Service 进行业务处理
+    const res = await service.comment.getComment(payload);
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res });
+  }
+
+  /**
   * @summary 添加评论
   * @description 添加评论
   * @router post /comment/Item
@@ -46,16 +82,17 @@ class CommentController extends Controller {
   * @description 取消评论
   * @router delete /comment/Item
   * @request query string commentId 评论ID
-  * @response 200 baseResponse 获取成功
+  * @response 200 baseResponse 取消成功
   */
   async cancelComment() {
     const { ctx, service } = this;
     // 组装参数
-    const payload = { id: ctx.query.commentId };
+    const payload = { id: +ctx.query.id };
     // 调用 Service 进行业务处理
     const res = await service.comment.cancelComment(payload);
+    const msg = res.affectedRows === 1 ? '取消成功' : '取消失败';
     // 设置响应内容和响应状态码
-    ctx.helper.success({ ctx, res });
+    ctx.helper.success({ ctx, res: null, msg });
   }
 
   /**

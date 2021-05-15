@@ -28,8 +28,10 @@ module.exports = app => {
 
   // 评论
   router.get('/getAllCommentByShopId', controller.comment.getAllCommentByShopId);
+  router.get('/getComment', controller.comment.getComment);
   router.post('/comment/checkComment', jwt, controller.comment.CheckComment);
   router.post('/comment/Item', jwt, controller.comment.addComment);
+  router.post('/comment/getItem', jwt, controller.comment.getAllCommentByUserId);
   router.post('/comment/addGoods', jwt, controller.comment.addCommentGoods);
   router.post('/uploadPic', controller.comment.upload);
   router.delete('/comment/Item', jwt, controller.comment.cancelComment);
