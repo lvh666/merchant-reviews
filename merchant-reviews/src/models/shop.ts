@@ -4,6 +4,7 @@ import {
   addDiscountItem,
   getDiscountList,
   addDiscountGoods,
+  addShop,
 } from '@/services/shop';
 import { message } from 'antd';
 
@@ -35,6 +36,7 @@ export interface ShopModelType {
   effects: {
     getShopItem: Effect;
     addDiscount: Effect;
+    addShop: Effect;
     getAllDiscounts: Effect;
     goodsDiscount: Effect;
   };
@@ -91,10 +93,24 @@ const ShopModel: ShopModelType = {
           msg: response.msg,
         },
       });
-      if (response.msg === '添加失败') {
-        message.error(response.msg);
-      } else {
+      if (response.msg === '添加成功') {
         history.goBack();
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *addShop({ payload }, { call, put }) {
+      const response = yield call(addShop, payload);
+      yield put({
+        type: 'changeState',
+        payload: {
+          msg: response.msg,
+        },
+      });
+      if (response.msg === '添加成功') {
+        history.goBack();
+      } else {
+        message.error(response.msg);
       }
     },
     *goodsDiscount({ payload }, { call, put }) {

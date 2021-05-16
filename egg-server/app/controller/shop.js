@@ -80,6 +80,27 @@ class ShopController extends Controller {
   }
 
   /**
+  * @summary 商家入驻
+  * @description 商家入驻
+  * @router post /shop/addShop
+  * @request body addShopRequest *body
+  * @response 200 baseResponse 添加成功
+  */
+  async addShop() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.addShopRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.shop.addShop(payload);
+    // 判断注册成功
+    const msg = res.affectedRows === 1 ? '添加成功' : '添加失败';
+    // 正常应答
+    ctx.helper.success({ ctx, res: null, msg });
+  }
+
+  /**
      * @summary 查询所有推荐菜品
      * @description 查询所有推荐菜品
      * @router get /getAllDiscount

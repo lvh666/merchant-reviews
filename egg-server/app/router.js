@@ -13,6 +13,7 @@ module.exports = app => {
   router.get('/getShopById', controller.shop.getShopById);
   router.get('/searchShop', controller.shop.searchShop);
   router.post('/shop/addDiscount', jwt, controller.shop.addDiscount);
+  router.post('/shop/addShop', jwt, controller.shop.addShop);
   router.get('/getAllDiscount', controller.shop.getAllDiscount);
   router.post('/shop/goodsDiscount', jwt, controller.shop.addDiscountGoods);
 

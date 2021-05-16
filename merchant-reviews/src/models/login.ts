@@ -53,13 +53,16 @@ const LoginModel: LoginModelType = {
       localStorage.setItem('name', response.data.user.name);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('login', 'true');
+      localStorage.setItem('role', response.data.user.role);
       history.push('/');
     },
     // 登出
     *logout({ payload }, { call, put }) {
       localStorage.removeItem('username');
       localStorage.removeItem('token');
+      localStorage.removeItem('name');
       localStorage.removeItem('login');
+      localStorage.removeItem('role');
       yield put({ type: 'userLogout' });
       history.push('/');
     },

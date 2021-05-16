@@ -40,6 +40,49 @@ module.exports = {
       required: false,
     },
   },
+  addShopRequest: {
+    username: {
+      type: 'string',
+      description: '用户名',
+      required: true,
+      example: '',
+    },
+    shop: {
+      type: 'string',
+      description: '餐馆名',
+      required: true,
+      example: '',
+    },
+    category: {
+      type: 'string',
+      description: '类型',
+      required: true,
+      example: '',
+    },
+    address: {
+      type: 'string',
+      description: '地址',
+      required: true,
+      example: '',
+    },
+    region: {
+      type: 'string',
+      description: '区域',
+      required: true,
+      example: '',
+    },
+    price: {
+      type: 'number',
+      description: '价格',
+      required: true,
+      example: 10,
+    },
+    files: {
+      type: 'string',
+      description: '图片',
+      required: false,
+    },
+  },
   goodsDiscountRequest: {
     id: {
       type: 'number',

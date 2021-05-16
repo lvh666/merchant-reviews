@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Map, Marker } from 'react-bmapgl';
 import './style.css';
 
 interface ShopProps {
@@ -17,6 +18,23 @@ interface ShopProps {
 
 const index: React.FC<ShopProps> = (props) => {
   const data = props.data;
+  // const [address, setAddress] = useState(new BMapGL.Point(116.404449, 39.914889))
+  
+  // useEffect(() => {
+  //   //创建地址解析器实例
+  //   const myGeo = new BMapGL.Geocoder();
+  //   // 将地址解析结果显示在地图上，并调整地图视野
+  //   myGeo.getPoint(
+  //     data.address,
+  //     function (point) {
+  //       if (point) {
+  //         setAddress(() => point)
+  //       }
+  //     },
+  //     '',
+  //   );
+  // }, [])
+
   return (
     <div className="shopInfos">
       <div className="shopInfo__middle">
@@ -47,6 +65,15 @@ const index: React.FC<ShopProps> = (props) => {
           <i className="shopInfo__phoneIcon"></i>
         </div>
       </div>
+      {/* <Map
+        center={address}
+        zoom={18}
+      >
+        <Marker
+          position={address}
+          enableDragging
+        />
+      </Map> */}
     </div>
   );
 };

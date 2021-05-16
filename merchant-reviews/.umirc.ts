@@ -9,6 +9,7 @@ export default defineConfig({
     { path: '/login', component: '@/pages/Login' },
     { path: '/registered', component: '@/pages/Registered' },
     { path: '/productDetail/:id', component: '@/pages/ProductDetail' },
+    { path: '/shop/settle', component: '@/pages/AddShop' },
     { path: '/shop/:id', component: '@/pages/Shop' },
     { path: '/search', component: '@/pages/Search' },
     { path: '/searchResult/:keyWords', component: '@/pages/SearchResult' },
@@ -26,4 +27,5 @@ export default defineConfig({
   ],
   dva: {},
   fastRefresh: {},
+  plugins: ['./src/plugins/BaiduMapPlugin.js'],
 });

@@ -12,6 +12,16 @@ interface DiscountParams {
   files: any;
 }
 
+interface ShopParams {
+  username: string;
+  shop: string;
+  category: string;
+  address: string;
+  region: string;
+  price: number;
+  files: any;
+}
+
 export function getShopList({ rowIndex, pageSize = 10 }: listParams) {
   return request.get(`/getAllShop?curPage=${rowIndex}&pageNum=${pageSize}`);
 }
@@ -26,6 +36,10 @@ export function getShop({ id }: { id: number }) {
 
 export function addDiscountItem({ id, name, price, files }: DiscountParams) {
   return request.post(`/shop/addDiscount`, { id, name, price, files });
+}
+
+export function addShop( shop: ShopParams) {
+  return request.post(`/shop/addShop`, shop);
 }
 
 export function addDiscountGoods({ id }: { id: string }) {
