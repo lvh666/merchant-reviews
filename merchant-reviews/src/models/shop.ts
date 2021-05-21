@@ -5,6 +5,9 @@ import {
   getDiscountList,
   addDiscountGoods,
   addShop,
+  getShopListByUserId,
+  delShopItem,
+  changeShopItem,
 } from '@/services/shop';
 import { message } from 'antd';
 
@@ -20,6 +23,7 @@ export interface ShopModelState {
   isFetching: boolean;
   msg: string;
   shop: any;
+  shops: any;
   discount: Array<discount>;
 }
 
@@ -27,6 +31,7 @@ const initialState = {
   isFetching: false,
   msg: '',
   shop: {},
+  shops: [],
   discount: [],
 };
 
@@ -39,12 +44,16 @@ export interface ShopModelType {
     addShop: Effect;
     getAllDiscounts: Effect;
     goodsDiscount: Effect;
+    getShopItemByUserID: Effect;
+    changeShop: Effect;
+    delShop: Effect;
   };
   reducers: {
     getItem: Reducer<ShopModelState>;
     changeState: Reducer<ShopModelState>;
     getDiscounts: Reducer<ShopModelState>;
     addGodds: Reducer<ShopModelState>;
+    setShops: Reducer<ShopModelState>;
     // 启用 immer 之后
     // save: ImmerReducer<IndexModelState>;
   };
@@ -57,6 +66,7 @@ const ShopModel: ShopModelType = {
     isFetching: false,
     msg: '',
     shop: {},
+    shops: [],
     discount: [],
   },
 
@@ -69,6 +79,17 @@ const ShopModel: ShopModelType = {
         type: 'getItem',
         payload: {
           shop: response.data,
+        },
+      });
+    },
+    // 通过用户ID获取餐馆信息
+    *getShopItemByUserID({ payload }, { call, put }) {
+      const { username } = payload;
+      const response = yield call(getShopListByUserId, { username });
+      yield put({
+        type: 'setShops',
+        payload: {
+          shops: response.data,
         },
       });
     },
@@ -95,6 +116,39 @@ const ShopModel: ShopModelType = {
       });
       if (response.msg === '添加成功') {
         history.goBack();
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 修改餐馆信息
+    *changeShop({ payload }, { call, put }) {
+      const response = yield call(changeShopItem, payload);
+      yield put({
+        type: 'changeState',
+        payload: {
+          msg: response.msg,
+        },
+      });
+      if (response.msg === '修改成功') {
+        message.success(response.msg);
+        history.goBack();
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 删除餐馆
+    *delShop({ payload }, { call, put }) {
+      const { id, shops } = payload;
+      const response = yield call(delShopItem, { id });
+      if (response.msg === '删除成功') {
+        let data = shops.filter((shop: any) => shop.id !== id)
+        yield put({
+          type: 'setShops',
+          payload: {
+            shops: data,
+          },
+        });
+        message.success(response.msg);
       } else {
         message.error(response.msg);
       }
@@ -143,6 +197,13 @@ const ShopModel: ShopModelType = {
         ...state,
         isFetching: false,
         discount: payload.discount,
+      };
+    },
+    setShops(state = initialState, { payload }) {
+      return {
+        ...state,
+        isFetching: false,
+        shops: payload.shops,
       };
     },
     changeState(state = initialState, { payload }) {

@@ -25,6 +25,25 @@ class ShopController extends Controller {
   }
 
   /**
+     * @summary 分页查询所有餐馆
+     * @description 分页查询所有餐馆
+     * @router get /shop/getItem
+     * @request body getShopRequest *body
+     * @response 200 baseResponse 获取成功
+     */
+  async getShopByUserId() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.getShopRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.shop.getShopByUserId(payload);
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res });
+  }
+
+  /**
   * @summary 查询餐馆详情
   * @description 查询餐馆详情
   * @router get /getShopById
@@ -101,6 +120,27 @@ class ShopController extends Controller {
   }
 
   /**
+  * @summary 修改商家
+  * @description 商家入驻
+  * @router post /shop/changeShop
+  * @request body changeShopRequest *body
+  * @response 200 baseResponse 修改成功
+  */
+  async changeShopItem() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.changeShopRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.shop.changeShop(payload);
+    // 判断注册成功
+    const msg = res.affectedRows === 1 ? '修改成功' : '修改失败';
+    // 正常应答
+    ctx.helper.success({ ctx, res: null, msg });
+  }
+
+  /**
      * @summary 查询所有推荐菜品
      * @description 查询所有推荐菜品
      * @router get /getAllDiscount
@@ -134,6 +174,26 @@ class ShopController extends Controller {
     // 调用 Service 进行业务处理
     const res = await service.shop.addDiscountGoods(payload);
     const msg = res.affectedRows === 1 ? '点赞成功' : '点赞失败';
+    // 正常应答
+    ctx.helper.success({ ctx, res: null, msg });
+  }
+
+  /**
+     * @summary 删除餐馆
+     * @description 删除餐馆
+     * @router post /shop/delShop
+     * @request body delShopRequest *body
+     * @response 200 baseResponse 删除成功
+     */
+  async delShop() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.delShopRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.shop.delShop(payload);
+    const msg = res.affectedRows === 1 ? '删除成功' : '删除失败';
     // 正常应答
     ctx.helper.success({ ctx, res: null, msg });
   }

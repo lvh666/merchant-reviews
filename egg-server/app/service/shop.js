@@ -10,12 +10,28 @@ class ShopService extends Service {
    */
   async getAllShop(payload) {
     const results = await this.app.mysql.select('shop', {
-      where: { isReview: 1 },
+      where: { isReview: 1, isDiscard: 0 },
       limit: payload.pageNum * payload.curPage,
       offset: payload.pageNum,
     });
     return results;
   }
+
+  /**
+   * 根据用户ID获取所有商店
+   * @param {*} payload
+   * @return
+   */
+  async getShopByUserId(payload) {
+    const user = await this.app.mysql.get('user', { username: payload.username });
+    const results = await this.app.mysql.select('shop', {
+      where: { user_id: user.id, isReview: 1, isDiscard: 0 },
+      limit: 100,
+      offset: 0,
+    });
+    return results;
+  }
+
   /**
    * 查询餐馆详情
    * @param {*} payload
@@ -31,7 +47,7 @@ class ShopService extends Service {
    * @return
    */
   async searchShop(payload) {
-    const sql = `SELECT * FROM shop WHERE shop LIKE "%${payload.keyWords}%" AND isReview = 1 LIMIT ${payload.pageNum * payload.curPage}, ${payload.pageNum}`;
+    const sql = `SELECT * FROM shop WHERE shop LIKE "%${payload.keyWords}%" AND isReview = 1 AND isDiscard = 0 LIMIT ${payload.pageNum * payload.curPage}, ${payload.pageNum}`;
     const res = await this.app.mysql.query(sql);
     return res;
   }
@@ -68,6 +84,35 @@ class ShopService extends Service {
       address: payload.address,
       create_time: new Date(),
     });
+    return res;
+  }
+
+  /**
+   * 修改餐馆信息
+   * @param {*} payload
+   * @return
+   */
+  async changeShop(payload) {
+    const shop = await this.app.mysql.get('shop', { id: payload.id });
+    shop.shop = payload.shop;
+    shop.price = payload.price;
+    shop.pic = payload.files;
+    shop.region = payload.region;
+    shop.category = payload.category;
+    shop.address = payload.address;
+    const res = await this.app.mysql.update('shop', shop);
+    return res;
+  }
+
+  /**
+   * 删除餐馆信息
+   * @param {*} payload
+   * @return
+   */
+  async delShop(payload) {
+    const shop = await this.app.mysql.get('shop', { id: payload.id });
+    shop.isDiscard = 1;
+    const res = await this.app.mysql.update('shop', shop);
     return res;
   }
 

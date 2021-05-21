@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { history } from 'umi';
+import { history, useDispatch } from 'umi';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -13,7 +13,6 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useDispatch } from 'umi';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

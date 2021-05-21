@@ -16,6 +16,9 @@ module.exports = app => {
   router.post('/shop/addShop', jwt, controller.shop.addShop);
   router.get('/getAllDiscount', controller.shop.getAllDiscount);
   router.post('/shop/goodsDiscount', jwt, controller.shop.addDiscountGoods);
+  router.post('/shop/getShop', jwt, controller.shop.getShopByUserId);
+  router.post('/shop/delShop', jwt, controller.shop.delShop);
+  router.post('/shop/changeShop', jwt, controller.shop.changeShopItem);
 
   // 产品
   router.get('/getProductById', controller.product.getProductById);

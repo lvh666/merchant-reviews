@@ -49,7 +49,7 @@ const index: React.FC<OrderListProps> = memo(({dataSource}) => {
     let data = dataSource || [];
     if (dataSource && currentTab > 0) data = dataSource.filter(data => data.state + 1 === currentTab)
     return data.map((item) => {
-      return <OrderItem key={item.id} data={item} cancelOrder={cancelOrder} />;
+      return <OrderItem key={item.id} data={item} cancelOrder={cancelOrder} currentTab={currentTab} />;
     });
   };
 

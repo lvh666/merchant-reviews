@@ -13,7 +13,8 @@ interface DiscountParams {
 }
 
 interface ShopParams {
-  username: string;
+  id?: number;
+  username?: string;
   shop: string;
   category: string;
   address: string;
@@ -24,6 +25,10 @@ interface ShopParams {
 
 export function getShopList({ rowIndex, pageSize = 10 }: listParams) {
   return request.get(`/getAllShop?curPage=${rowIndex}&pageNum=${pageSize}`);
+}
+
+export function getShopListByUserId({ username }: { username: string}) {
+  return request.post(`/shop/getShop`, { username });
 }
 
 export function searchShopList({ keyWords, rowIndex, pageSize = 10 }: listParams) {
@@ -44,6 +49,14 @@ export function addShop( shop: ShopParams) {
 
 export function addDiscountGoods({ id }: { id: string }) {
   return request.post(`/shop/goodsDiscount`, { id });
+}
+
+export function changeShopItem( shop: ShopParams) {
+  return request.post(`/shop/changeShop`, shop);
+}
+
+export function delShopItem({ id }: { id: string }) {
+  return request.post(`/shop/delShop`, { id });
 }
 
 export function getDiscountList({ id }: { id: string }) {

@@ -93,12 +93,12 @@ export default function SimpleList() {
         </ListItem>
 
         {localStorage.getItem('role') === '1' ? (
-          <ListItem button onClick={() => toShow('/shop/settle')}>
+          <ListItem button onClick={() => toShow('/shopList')}>
             <ListItemIcon>
               <HowToRegIcon />
             </ListItemIcon>
-            <ListItemText primary="商家管理" />
-            <ListItemSecondaryAction onClick={() => toShow('/shop/settle')}>
+            <ListItemText primary="餐馆管理" />
+            <ListItemSecondaryAction onClick={() => toShow('/shopList')}>
               <IconButton edge="end" aria-label="addShop">
                 <ArrowForwardIosIcon />
               </IconButton>
