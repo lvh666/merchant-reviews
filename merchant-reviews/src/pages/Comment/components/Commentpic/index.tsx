@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, Modal } from 'antd';
+import { Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 interface CommentPicProps {

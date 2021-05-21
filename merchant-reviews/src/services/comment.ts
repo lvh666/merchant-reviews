@@ -16,7 +16,7 @@ interface listParams {
 
 export function uploadPicItem({ file }: { file: any }) {
   const formData = new FormData();
-  formData.append('file', file.file);
+  formData.append('file', file);
   return request.post(`/uploadPic`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });

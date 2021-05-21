@@ -5,12 +5,14 @@ import {
   useSelector,
   useDispatch,
   ShopModelState,
+  CommentModelState,
 } from 'umi';
 import Header from '@/components/Header';
-import CommentPic from '@/pages/Comment/components/CommentPic';
+import UploadPic from '../UploadPic';
 import { List, InputItem, Button } from 'antd-mobile';
 import { message } from 'antd';
 import { AutoComplete } from 'react-bmapgl';
+import { uploadPicItem } from '@/services/comment'
 
 interface PicProps {
   uid: string;
@@ -21,6 +23,7 @@ interface PicProps {
 
 const index = () => {
   const data = useSelector(({ shop }: { shop: ShopModelState }) => shop.shop);
+  const pic = useSelector(({ comment }: { comment: CommentModelState }) => comment.pic);
   const { id }: { id: string } = useParams();
   const dispatch = useDispatch();
   const [shop, setShop] = useState('');
@@ -57,17 +60,12 @@ const index = () => {
     });
   }, []);
 
-  const handlePicChange = (file: any) => {
-    if (file.file.response) {
-      const item = file.file.response.data.url as string;
-      const index = fileList.indexOf(item);
-      if (index !== -1) {
-        setFileList((files) => files.splice(index, 1));
-      } else {
-        setFileList((files) => files.concat(item));
-      }
+  const  handlePicChange = async (files: any) => {
+    if (files.length && files[0]?.file) {
+      const { data } = await uploadPicItem({file: files[0]?.file})
+      setFileList(() => [data.url]);
     }
-    setFiles(file.fileList);
+    setFiles(() => files);
   };
 
   const handleBack = () => {
@@ -162,7 +160,7 @@ const index = () => {
         </InputItem>
       </List>
       <List renderHeader={() => '商家图片'}>
-        <CommentPic num={1} fileList={files} handleChange={handlePicChange} />
+        <UploadPic num={1} fileList={files} handleChange={handlePicChange} />
       </List>
       <Button onClick={submit} type="primary">
         修改

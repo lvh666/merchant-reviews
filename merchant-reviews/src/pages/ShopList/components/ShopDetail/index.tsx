@@ -38,7 +38,7 @@ const RecipeReviewCard: React.FC<CardContentProps> = ({
   return (
     <Card>
       <CardContent onClick={() => handleClick(data.id)}>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body2" color="textSecondary" component="div">
           <div className="likeItem__picContainer">
             <div className="likeItem__picTag">{data.category}</div>
             <img className="likeItem__pic" src={data.pic} />
