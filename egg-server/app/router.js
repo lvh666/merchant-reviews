@@ -23,6 +23,10 @@ module.exports = app => {
   // 产品
   router.get('/getProductById', controller.product.getProductById);
   router.get('/getAllProductById', controller.product.getAllProductByShopId);
+  router.post('/product/getItem', jwt, controller.product.getProductByUserId);
+  router.post('/product/delProduct', jwt, controller.product.delProduct);
+  router.post('/product/changeProduct', jwt, controller.product.changeProductItem);
+  router.post('/product/addProduct', jwt, controller.product.addProduct);
 
   // 订单
   router.post('/getOrderById', jwt, controller.order.getOrderById);

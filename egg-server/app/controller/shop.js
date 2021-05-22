@@ -25,8 +25,8 @@ class ShopController extends Controller {
   }
 
   /**
-     * @summary 分页查询所有餐馆
-     * @description 分页查询所有餐馆
+     * @summary 根据用户ID查询所有餐馆
+     * @description 根据用户ID查询所有餐馆
      * @router get /shop/getItem
      * @request body getShopRequest *body
      * @response 200 baseResponse 获取成功

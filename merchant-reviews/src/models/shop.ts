@@ -141,7 +141,7 @@ const ShopModel: ShopModelType = {
       const { id, shops } = payload;
       const response = yield call(delShopItem, { id });
       if (response.msg === '删除成功') {
-        let data = shops.filter((shop: any) => shop.id !== id)
+        let data = shops.filter((shop: any) => shop.id !== id);
         yield put({
           type: 'setShops',
           payload: {

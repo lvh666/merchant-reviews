@@ -118,12 +118,12 @@ export default function SimpleList() {
           </ListItem>
         )}
         {localStorage.getItem('role') === '1' && (
-          <ListItem button onClick={() => toShow('/selfComment')}>
+          <ListItem button onClick={() => toShow('/product')}>
             <ListItemIcon>
               <StorefrontIcon />
             </ListItemIcon>
-            <ListItemText primary="商品管理" />
-            <ListItemSecondaryAction onClick={() => toShow('/selfComment')}>
+            <ListItemText primary="优惠商品管理" />
+            <ListItemSecondaryAction onClick={() => toShow('/product')}>
               <IconButton edge="end" aria-label="product">
                 <ArrowForwardIosIcon />
               </IconButton>

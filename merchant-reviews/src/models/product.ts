@@ -1,5 +1,13 @@
-import { Effect, ImmerReducer, Reducer, Subscription } from 'umi';
-import { getAllProductById, getProductById } from '@/services/product';
+import { Effect, ImmerReducer, Reducer, Subscription, history } from 'umi';
+import {
+  getAllProductById,
+  getProductById,
+  getProduct,
+  changeProductItem,
+  delProductItem,
+  addProduct,
+} from '@/services/product';
+import { message } from 'antd';
 
 export interface ProductModelState {
   isFetching: boolean;
@@ -21,6 +29,10 @@ export interface ProductModelType {
   effects: {
     loadLikes: Effect;
     loadDiscounts: Effect;
+    getProductItemByUserID: Effect;
+    changeProduct: Effect;
+    delProduct: Effect;
+    addProduct: Effect;
   };
   reducers: {
     likes: Reducer<ProductModelState>;
@@ -78,6 +90,64 @@ const ProductModel: ProductModelType = {
             msg: '无数据',
           },
         });
+      }
+    },
+    // 通过用户ID获取餐馆信息
+    *getProductItemByUserID({ payload }, { call, put }) {
+      const { username } = payload;
+      const response = yield call(getProduct, { username });
+      yield put({
+        type: 'likes',
+        payload: {
+          products: response.data,
+        },
+      });
+    },
+    // 修改餐馆信息
+    *changeProduct({ payload }, { call, put }) {
+      const response = yield call(changeProductItem, payload);
+      yield put({
+        type: 'setState',
+        payload: {
+          msg: response.msg,
+        },
+      });
+      if (response.msg === '修改成功') {
+        message.success(response.msg);
+        history.goBack();
+      } else {
+        message.error(response.msg);
+      }
+    },
+    // 删除餐馆
+    *delProduct({ payload }, { call, put }) {
+      const { id, products } = payload;
+      const response = yield call(delProductItem, { id });
+      if (response.msg === '删除成功') {
+        let data = products.filter((product: any) => product.id !== id);
+        yield put({
+          type: 'likes',
+          payload: {
+            products: data,
+          },
+        });
+        message.success(response.msg);
+      } else {
+        message.error(response.msg);
+      }
+    },
+    *addProduct({ payload }, { call, put }) {
+      const response = yield call(addProduct, payload);
+      yield put({
+        type: 'setState',
+        payload: {
+          msg: response.msg,
+        },
+      });
+      if (response.msg === '添加成功') {
+        history.goBack();
+      } else {
+        message.error(response.msg);
       }
     },
   },

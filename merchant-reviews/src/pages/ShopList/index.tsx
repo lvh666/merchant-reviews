@@ -41,7 +41,7 @@ const index = () => {
 
   return (
     <div>
-      <Header title="商家列表" onBack={handleBack} grey />
+      <Header title="餐馆列表" onBack={handleBack} grey />
       {shops.map((shop: any) => {
         return (
           <ShopDetail
