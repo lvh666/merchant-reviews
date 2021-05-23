@@ -28,6 +28,9 @@ class OrderService extends Service {
    */
   async addOrder(payload) {
     const user = await this.app.mysql.get('user', { username: payload.username });
+    const product = await this.app.mysql.get('product', { username: payload.productId });
+    product.sale_num += 1;
+    await this.app.mysql.update('product', product);
     const res = await this.app.mysql.insert('order', {
       user_id: user.id,
       shop_id: payload.shopId,

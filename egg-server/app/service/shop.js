@@ -18,6 +18,19 @@ class ShopService extends Service {
   }
 
   /**
+   * 获取所有商店
+   * @param {*} payload
+   * @return
+   */
+  async getShops(payload) {
+    const results = await this.app.mysql.select('shop', {
+      where: { isDiscard: 0 },
+      limit: payload.pageNum * payload.curPage,
+      offset: payload.pageNum,
+    });
+    return results;
+  }
+  /**
    * 根据用户ID获取所有商店
    * @param {*} payload
    * @return
@@ -112,6 +125,18 @@ class ShopService extends Service {
   async delShop(payload) {
     const shop = await this.app.mysql.get('shop', { id: payload.id });
     shop.isDiscard = 1;
+    const res = await this.app.mysql.update('shop', shop);
+    return res;
+  }
+
+  /**
+   * 审核餐馆
+   * @param {*} payload
+   * @return
+   */
+  async reviewShop(payload) {
+    const shop = await this.app.mysql.get('shop', { id: payload.id });
+    shop.isReview = payload.type;
     const res = await this.app.mysql.update('shop', shop);
     return res;
   }

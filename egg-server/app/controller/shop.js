@@ -25,6 +25,24 @@ class ShopController extends Controller {
   }
 
   /**
+     * @summary 查询所有餐馆
+     * @description 查询所有餐馆
+     * @router post /shop/getShops
+     * @request query number curPage 当前页
+     * @request query number pageNum 个/页
+     * @response 200 baseResponse 获取成功
+     */
+  async getShops() {
+    const { ctx, service } = this;
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.shop.getShops(payload);
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res });
+  }
+
+  /**
      * @summary 根据用户ID查询所有餐馆
      * @description 根据用户ID查询所有餐馆
      * @router get /shop/getItem
@@ -194,6 +212,26 @@ class ShopController extends Controller {
     // 调用 Service 进行业务处理
     const res = await service.shop.delShop(payload);
     const msg = res.affectedRows === 1 ? '删除成功' : '删除失败';
+    // 正常应答
+    ctx.helper.success({ ctx, res: null, msg });
+  }
+
+  /**
+     * @summary 审核餐馆
+     * @description 审核餐馆
+     * @router post /shop/reviewShop
+     * @request body delShopRequest *body
+     * @response 200 baseResponse 审核成功
+     */
+  async reviewShop() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.reviewShopRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.shop.reviewShop(payload);
+    const msg = res.affectedRows === 1 ? '审核成功' : '审核失败';
     // 正常应答
     ctx.helper.success({ ctx, res: null, msg });
   }

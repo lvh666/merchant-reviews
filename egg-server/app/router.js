@@ -19,6 +19,8 @@ module.exports = app => {
   router.post('/shop/getShop', jwt, controller.shop.getShopByUserId);
   router.post('/shop/delShop', jwt, controller.shop.delShop);
   router.post('/shop/changeShop', jwt, controller.shop.changeShopItem);
+  router.post('/shop/getShops', jwt, controller.shop.getShops);
+  router.post('/shop/reviewShop', jwt, controller.shop.reviewShop);
 
   // 产品
   router.get('/getProductById', controller.product.getProductById);
@@ -44,6 +46,7 @@ module.exports = app => {
   router.post('/uploadPic', controller.comment.upload);
   router.delete('/comment/Item', jwt, controller.comment.cancelComment);
   router.put('/comment/Item', jwt, controller.comment.updateComment);
+  router.post('/comment/getAllComment', jwt, controller.comment.getAllComment);
 
   // 登录，注册
   router.post('/registered', controller.user.registered);

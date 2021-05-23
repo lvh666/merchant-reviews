@@ -24,6 +24,22 @@ class CommentController extends Controller {
   }
 
   /**
+     * @summary 查询所有评论
+     * @description 查询所有评论
+     * @router post /comment/getAllComment
+     * @response 200 baseResponse 获取成功
+     */
+  async getAllComment() {
+    const { ctx, service } = this;
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const { results, total } = await service.comment.getAllComment(payload);
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res: { comments: results, total } });
+  }
+
+  /**
      * @summary 根据用户ID查询评论
      * @description 根据用户ID查询评论
      * @router post /getAllCommentByUserId

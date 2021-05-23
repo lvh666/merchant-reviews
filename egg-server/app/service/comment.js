@@ -10,7 +10,7 @@ class CommentService extends Service {
    */
   async getAllCommentByShopId(payload) {
     const results = await this.app.mysql.select('comment', {
-      where: { shop_id: payload.shopId },
+      where: { shop_id: payload.shopId, isReview: 0 },
       limit: 100,
       offset: 0,
     });
@@ -28,6 +28,33 @@ class CommentService extends Service {
   }
 
   /**
+   * 获取所有评论
+   * @param {*} payload
+   * @return
+   */
+  async getAllComment(payload) {
+    const sql = 'SELECT COUNT(*) FROM comment where isReview = 0';
+    const total = await this.app.mysql.query(sql);
+    const results = await this.app.mysql.select('comment', {
+      where: { isReview: 0 },
+      orders: [[ 'create_date', 'desc' ]],
+      limit: payload.curPage * payload.pageNum,
+      offset: payload.curPage,
+    });
+    for (const comment of results) {
+      const shop = await this.app.mysql.get('shop', { id: comment.shop_id });
+      comment.shop = shop;
+      const pic = await this.app.mysql.select('pic_comment', {
+        where: { comment_id: comment.id },
+        limit: 100,
+        offset: 0,
+      });
+      comment.img = pic;
+    }
+    return { results, total: total[0]['COUNT(*)'] };
+  }
+
+  /**
    * 获取评论
    * @param {*} payload
    * @return
@@ -39,7 +66,7 @@ class CommentService extends Service {
     const user = await this.app.mysql.get('user', { id: res.user_id });
     res.user = user;
     const pic = await this.app.mysql.select('pic_comment', {
-      where: { comment_id: res.id },
+      where: { comment_id: res.id, isReview: 0 },
       limit: 100,
       offset: 0,
     });
@@ -57,7 +84,7 @@ class CommentService extends Service {
       username: payload.username,
     });
     const results = await this.app.mysql.select('comment', {
-      where: { user_id: user.id },
+      where: { user_id: user.id, isReview: 0 },
       limit: 100,
       offset: 0,
     });
@@ -125,7 +152,9 @@ class CommentService extends Service {
    * @return
    */
   async cancelComment(payload) {
-    const comment = await this.app.mysql.get('comment', payload);
+    const comment = await this.app.mysql.get('comment', {
+      id: payload.id,
+    });
     const shop = await this.app.mysql.get('shop', { id: comment.shop_id });
     const totalStar = await this.app.mysql.get('star_total', {
       shop_id: comment.shop_id,
@@ -134,7 +163,8 @@ class CommentService extends Service {
     shop.comment_quantity -= 1;
     shop.star = totalStar.star_total / shop.comment_quantity;
     await this.app.mysql.update('shop', shop);
-    const res = await this.app.mysql.delete('comment', payload);
+    comment.isReview = 1;
+    const res = await this.app.mysql.update('comment', comment);
     return res;
   }
 
@@ -178,6 +208,7 @@ class CommentService extends Service {
     const res = await this.app.mysql.get('comment', {
       user_id: user.id,
       shop_id: payload.id,
+      isReview: 0,
     });
     return res ? 1 : 0;
   }

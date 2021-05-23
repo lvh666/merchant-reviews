@@ -1,6 +1,20 @@
 'use strict';
 
 module.exports = {
+  reviewShopRequest: {
+    id: {
+      type: 'number',
+      description: 'id',
+      required: true,
+      example: 10,
+    },
+    type: {
+      type: 'number',
+      description: 'id',
+      required: true,
+      example: 1,
+    },
+  },
   changeShopRequest: {
     id: {
       type: 'number',

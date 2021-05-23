@@ -7,7 +7,7 @@ module.exports = {
       description: '手机号',
       required: true,
       example: '13035651111',
-      format: /^1[34578]\d{9}$/,
+      // format: /^1[34578]\d{9}$/,
     },
     password: {
       type: 'string',
