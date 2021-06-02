@@ -32,5 +32,5 @@ export default defineConfig({
   ],
   dva: {},
   fastRefresh: {},
-  plugins: ['./src/plugins/BaiduMapPlugin.js'],
+  plugins: ['./src/plugins/BaiduMapPlugin.js', './src/plugins/PaypalPlugin.js'],
 });

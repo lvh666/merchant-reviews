@@ -58,6 +58,16 @@ const index: React.FC<ShopListProps> = ({ text }) => {
     });
   }, [ loadTimes ]);
 
+  const renderEmpty = () => {
+    return (
+      <div className="userMain__empty">
+        <div className="userMain__emptyIcon" />
+        <div className="userMain__emptyText1">该关键字还没有相关商家</div>
+        <div className="userMain__emptyText2">去搜索其它看看</div>
+      </div>
+    );
+  };
+
   return (
     <div className="shopList">
       <div className="shopList__filter">
@@ -75,6 +85,7 @@ const index: React.FC<ShopListProps> = ({ text }) => {
           );
         })}
       </div>
+      {data?.data.length < 1 && renderEmpty()}
     </div>
   );
 };

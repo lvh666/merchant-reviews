@@ -17,7 +17,7 @@ class ShopController extends Controller {
   async getAllShop() {
     const { ctx, service } = this;
     // 组装参数
-    const payload = { curPage: +ctx.query.curPage || 0, pageNum: +ctx.query.pageNum || 10 };
+    const payload = { curPage: +ctx.query.curPage || 0, pageNum: +ctx.query.pageNum || 10, city: ctx.query.city };
     // 调用 Service 进行业务处理
     const res = await service.shop.getAllShop(payload);
     // 设置响应内容和响应状态码
@@ -88,7 +88,7 @@ class ShopController extends Controller {
   async searchShop() {
     const { ctx, service } = this;
     // 组装参数
-    const payload = { keyWords: ctx.query.keyWords, curPage: +ctx.query.curPage || 0, pageNum: +ctx.query.pageNum || 10 };
+    const payload = { keyWords: ctx.query.keyWords, curPage: +ctx.query.curPage || 0, pageNum: +ctx.query.pageNum || 10, city: ctx.query.city };
     // 调用 Service 进行业务处理
     const res = await service.shop.searchShop(payload);
     // 设置响应内容和响应状态码

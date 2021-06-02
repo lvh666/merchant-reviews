@@ -7,6 +7,8 @@ interface UserParems {
   username: string;
   password: string;
   name: string;
+  money: number;
+  avar: string;
 }
 
 export interface UserModelState {

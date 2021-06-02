@@ -26,7 +26,7 @@ const index = () => {
   }, []);
 
   const handleBack = () => {
-    history.goBack()
+    history.push('/user')
   };
 
   return (

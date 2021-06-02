@@ -4,11 +4,13 @@ import { getAllOrderByUserId, addOrder, cancelOrder } from '@/services/order';
 export interface OrderModelState {
   isFetching: boolean;
   data: any[];
+  msg: string;
 }
 
 const initialState = {
   isFetching: false,
   data: [],
+  msg: '',
 };
 
 export interface OrderModelType {
@@ -31,6 +33,7 @@ const OrderModel: OrderModelType = {
   state: {
     isFetching: false,
     data: [],
+    msg: '',
   },
 
   effects: {
@@ -61,13 +64,13 @@ const OrderModel: OrderModelType = {
       yield put({
         type: 'setState',
         payload: {
-          msg: response.msg,
+          msg: response.data.insertId,
         },
       });
     },
     *delOrder({ payload }, { call, put }) {
-      const { id, data } = payload;
-      const response = yield call(cancelOrder, { id });
+      const { id, status, data } = payload;
+      const response = yield call(cancelOrder, { id, status });
       yield put({
         type: 'setState',
         payload: {

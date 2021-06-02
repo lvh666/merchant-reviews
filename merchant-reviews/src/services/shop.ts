@@ -20,19 +20,20 @@ interface ShopParams {
   address: string;
   region: string;
   price: number;
+  phone: string;
   files: any;
 }
 
-export function getShopList({ rowIndex, pageSize = 10 }: listParams) {
-  return request.get(`/getAllShop?curPage=${rowIndex}&pageNum=${pageSize}`);
+export function getShopList({ rowIndex, pageSize = 100 }: listParams) {
+  return request.get(`/getAllShop?curPage=${rowIndex}&pageNum=${pageSize}&city=${localStorage.getItem('city')?.replace('城区','').replace('市','')}`);
 }
 
 export function getShopListByUserId({ username }: { username: string}) {
   return request.post(`/shop/getShop`, { username });
 }
 
-export function searchShopList({ keyWords, rowIndex, pageSize = 10 }: listParams) {
-  return request.get(`/searchShop?curPage=${rowIndex}&pageNum=${pageSize}&keyWords=${keyWords}`);
+export function searchShopList({ keyWords, rowIndex, pageSize = 100 }: listParams) {
+  return request.get(`/searchShop?curPage=${rowIndex}&pageNum=${pageSize}&keyWords=${keyWords}&city=${localStorage.getItem('city')?.replace('城区','').replace('市','')}`);
 }
 
 export function getShop({ id }: { id: number }) {

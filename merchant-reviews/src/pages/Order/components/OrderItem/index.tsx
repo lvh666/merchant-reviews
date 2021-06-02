@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { message } from 'antd';
+import Tip from '@/components/Tip';
+import { useDispatch, history } from 'umi';
 import './style.css';
 
 interface DataArray {
@@ -16,9 +19,31 @@ interface OrderItemProps {
   cancelOrder: (id: number) => void;
 }
 
-const index: React.FC<OrderItemProps> = ({ data, currentTab, cancelOrder }) => {
+const index: React.FC<OrderItemProps> = ({ data, cancelOrder }) => {
   const { id, product, price, state, num } = data;
-  const tag = ['未支付', '未使用', '已取消', '已使用'];
+  const dispatch = useDispatch();
+  const [isShow, setIsShow] = useState(false);
+  const tag = ['未支付', '已支付', '退款中', '已取消'];
+
+  const handleClick = () => {
+    setIsShow(() => true);
+  };
+
+  const handleSuccess = () => {
+    message.success('支付成功');
+    dispatch({
+      type: 'order/delOrder',
+      payload: {
+        id,
+        status: 1,
+        data: [],
+      },
+    });
+    history.push('/order');
+    setIsShow(() => false);
+    location.reload();
+  };
+
   return (
     <div className="orderItem">
       <div className="orderItem__title">
@@ -35,7 +60,7 @@ const index: React.FC<OrderItemProps> = ({ data, currentTab, cancelOrder }) => {
         </div>
         <div className="orderItem__content">
           <div className="orderItem__line">
-            数量：{num} | 总价：￥{num * price}
+            数量：{num} | 总价：￥{(num * price).toFixed(2)}
           </div>
           <div className="orderItem__line">
             有效期至{product && product.end_time.slice(0, 10)}
@@ -44,14 +69,29 @@ const index: React.FC<OrderItemProps> = ({ data, currentTab, cancelOrder }) => {
       </div>
       <div className="orderItem__bottom">
         <div className="orderItem__type">团购</div>
-        {state !== 2 && (
-          <div>
-            <div className="orderItem__btn" onClick={() => cancelOrder(id)}>
-              取消
+        <div>
+          {state === 0 && (
+            <div className="orderItem__btn" onClick={handleClick}>
+              支付
             </div>
-          </div>
-        )}
+          )}
+          {state !== 2 && (
+            <div className="orderItem__btn" onClick={() => cancelOrder(id)}>
+              退款
+            </div>
+          )}
+        </div>
       </div>
+      <Tip
+        isShow={isShow}
+        id={id}
+        price={num * price}
+        onClose={() => {
+          setIsShow(() => false);
+          message.success('取消支付');
+        }}
+        onSuccess={handleSuccess}
+      />
     </div>
   );
 };

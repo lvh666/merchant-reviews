@@ -16,7 +16,7 @@ const data = [
   },
 ];
 
-const tabTitles = ['全部订单', '待付款', '可使用', '退款/售后'];
+const tabTitles = ['全部订单', '待付款', '可使用', '退款中', '退款/售后'];
 
 interface DataArray {
   id: number;
@@ -40,9 +40,11 @@ const index: React.FC<OrderListProps> = memo(({dataSource}) => {
       type: 'order/delOrder',
       payload: {
         id,
+        status: 2,
         data: dataSource,
       },
     });
+    location.reload();
   };
 
   const renderOrderList = () => {

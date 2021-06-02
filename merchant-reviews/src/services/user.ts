@@ -5,6 +5,7 @@ interface UserParams {
   username: string;
   password?: string;
   name?: string;
+  paypalName?: string;
 }
 
 export function login({ username, password }: UserParams) {
@@ -32,4 +33,16 @@ export function getUser({ username }: { username: string }) {
 
 export function changeUser({ id, username, name }: UserParams) {
   return request.post('/user/changeItem', { id, username, name });
+}
+
+export function userWithdraw({
+  paypalName,
+  username,
+  name,
+}: {
+  username: string;
+  name: string;
+  paypalName: string;
+}) {
+  return request.post('/user/withdraw', { paypalName, username, name });
 }

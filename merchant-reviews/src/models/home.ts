@@ -75,14 +75,14 @@ const HomeModel: HomeModelType = {
         ...state,
         isFetching: false,
         pageCount: state.pageCount + 1,
-        data: state.data.concat(payload.likesInfo),
+        data: payload.likesInfo,
       };
     },
     discounts(state = initialState.discounts, { payload }) {
       return {
         ...state,
         isFetching: false,
-        data: state.data.concat(payload.likesInfo),
+        data: payload.likesInfo,
       };
     },
     setState(state = initialState.likes, { payload }) {

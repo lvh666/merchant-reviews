@@ -26,6 +26,43 @@ class OrderController extends Controller {
   }
 
   /**
+     * @summary 查询订单列表
+     * @description 查询订单列表
+     * @router post /order/getAllOrder
+     * @request body getAllOrderRequest *body
+     * @response 200 baseResponse 获取成功
+     */
+  async getAllOrder() {
+    const { ctx, service } = this;
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.order.getAllOrder(payload);
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res });
+  }
+
+  /**
+     * @summary 提现
+     * @description 提现
+     * @router post /withdraw
+     * @request body withdrawRequest *body
+     * @response 200 baseResponse 提现成功
+     */
+  async userWithdraw() {
+    const { ctx, service } = this;
+    // 有效性检查
+    ctx.validate(ctx.rule.withdrawRequest);
+    // 组装参数
+    const payload = ctx.request.body || {};
+    // 调用 Service 进行业务处理
+    const res = await service.order.userWithdraw(payload);
+    const msg = res.affectedRows === 1 ? '提现成功' : '提现失败';
+    // 设置响应内容和响应状态码
+    ctx.helper.success({ ctx, res: null, msg });
+  }
+
+  /**
   * @summary 下单
   * @description 下单
   * @router post /order/Item
@@ -59,8 +96,10 @@ class OrderController extends Controller {
     const payload = ctx.request.body || {};
     // 调用 Service 进行业务处理
     const res = await service.order.cancelOrder(payload);
+    const arr = [ '支付失败', '支付成功', '取消失败', '取消成功' ];
     // 判断注册成功
-    const msg = res.affectedRows === 1 ? '取消成功' : '取消失败';
+    let msg = arr[(payload.status - 1) * 2 + res.affectedRows];
+    if (payload.flag) msg = '审核成功';
     // 正常应答
     ctx.helper.success({ ctx, res: null, msg });
   }

@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 interface OrderParams {
-  username: number;
+  username: string;
   shopId: number;
   productId: number;
   price: number;
@@ -18,6 +18,6 @@ export function addOrder(data: OrderParams) {
   return request.post(`/order/Item`, data);
 }
 
-export function cancelOrder({ id }: { id: number }) {
-  return request.put(`/order/Item`, { id });
+export function cancelOrder({ id, status }: { id: number, status: number }) {
+  return request.put(`/order/Item`, { id, status });
 }

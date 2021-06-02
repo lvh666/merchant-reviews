@@ -10,7 +10,7 @@ class ShopService extends Service {
    */
   async getAllShop(payload) {
     const results = await this.app.mysql.select('shop', {
-      where: { isReview: 1, isDiscard: 0 },
+      where: { isReview: 1, isDiscard: 0, region: payload.city },
       limit: payload.pageNum * payload.curPage,
       offset: payload.pageNum,
     });
@@ -60,7 +60,7 @@ class ShopService extends Service {
    * @return
    */
   async searchShop(payload) {
-    const sql = `SELECT * FROM shop WHERE shop LIKE "%${payload.keyWords}%" AND isReview = 1 AND isDiscard = 0 LIMIT ${payload.pageNum * payload.curPage}, ${payload.pageNum}`;
+    const sql = `SELECT * FROM shop WHERE shop LIKE "%${payload.keyWords}%" AND region = '${payload.city}' AND isReview = 1 AND isDiscard = 0 LIMIT ${payload.pageNum * payload.curPage}, ${payload.pageNum}`;
     const res = await this.app.mysql.query(sql);
     return res;
   }
@@ -95,6 +95,7 @@ class ShopService extends Service {
       region: payload.region,
       category: payload.category,
       address: payload.address,
+      phone: payload.phone,
       create_time: new Date(),
     });
     return res;

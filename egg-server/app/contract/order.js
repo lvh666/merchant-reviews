@@ -9,12 +9,44 @@ module.exports = {
       example: 0,
     },
   },
+  withdrawRequest: {
+    username: {
+      type: 'string',
+      description: '用户名',
+      required: true,
+      example: 0,
+    },
+    name: {
+      type: 'string',
+      description: '账户名',
+      required: true,
+      example: 0,
+    },
+    paypalName: {
+      type: 'string',
+      description: 'PayPal账号',
+      required: true,
+      example: 0,
+    },
+  },
   orderRequest: {
     id: {
       type: 'number',
       description: '订单ID',
       required: true,
       example: 0,
+    },
+    status: {
+      type: 'number',
+      description: '状态码',
+      required: false,
+      example: 0,
+    },
+    flag: {
+      type: 'boolean',
+      description: '标签',
+      required: false,
+      example: false,
     },
   },
   addOrderRequest: {

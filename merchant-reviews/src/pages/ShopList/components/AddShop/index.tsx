@@ -13,6 +13,7 @@ const index = () => {
   const [shop, setShop] = useState('');
   const [category, setCategory] = useState('');
   const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
   const [region, setRegion] = useState('');
   const [price, setPrice] = useState('');
   const [files, setFiles] = useState([]);
@@ -50,7 +51,6 @@ const index = () => {
 
   const handleAddress = (e: any) => {
     setAddress(() => e.item.value.city + e.item.value.business);
-    setRegion(() => e.item.value.city);
   };
 
   const handlePriceChange = (value: string) => {
@@ -58,16 +58,23 @@ const index = () => {
   };
 
   const submit = () => {
+    const reg = /^1[3,5,8]\d{9}$/;
     if (!shop) {
       message.error('请输入餐馆名称');
     } else if (!category) {
       message.error('请输入类型');
+    } else if (!phone) {
+      message.error('请输入联系电话');
+    } else if (!reg.test(phone)) {
+      message.error('请输入正确的联系电话');
+    } else if (!region) {
+      message.error('请输入城市');
     } else if (!address) {
       message.error('请输入地址');
     } else if (!price) {
-      message.error('请输入菜品价格');
+      message.error('请输入人均价格');
     } else if (isNaN(Number(price))) {
-      message.error('请输入正确的菜品价格');
+      message.error('请输入正确的人均价格');
     } else if (!fileList.length) {
       message.error('请上传图片');
     } else {
@@ -79,6 +86,7 @@ const index = () => {
           category,
           address,
           region,
+          phone,
           price: +price,
           files: fileList[0],
         },
@@ -105,6 +113,20 @@ const index = () => {
           类型
         </InputItem>
         <InputItem
+          onChange={(value) => setPhone(() => value)}
+          value={phone}
+          placeholder="请输入联系电话"
+        >
+          电话
+        </InputItem>
+        <InputItem
+          onChange={(value) => setRegion(() => value)}
+          value={region}
+          placeholder="请输入城市"
+        >
+          城市
+        </InputItem>
+        <InputItem
           onChange={handleAddressChange}
           //   onBlur={handleBlur}
           value={address}
@@ -115,6 +137,7 @@ const index = () => {
         </InputItem>
         <AutoComplete
           input="address"
+          location={region}
           onConfirm={handleAddress}
         />
         <InputItem

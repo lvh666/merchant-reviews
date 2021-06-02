@@ -66,7 +66,7 @@ class CommentService extends Service {
     const user = await this.app.mysql.get('user', { id: res.user_id });
     res.user = user;
     const pic = await this.app.mysql.select('pic_comment', {
-      where: { comment_id: res.id, isReview: 0 },
+      where: { comment_id: res.id },
       limit: 100,
       offset: 0,
     });

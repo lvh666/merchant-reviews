@@ -35,6 +35,8 @@ module.exports = app => {
   router.post('/order/getAllOrder', jwt, controller.order.getAllOrderByUserId);
   router.post('/order/Item', jwt, controller.order.addOrder);
   router.put('/order/Item', jwt, controller.order.cancelOrder);
+  router.post('/user/withdraw', jwt, controller.order.userWithdraw);
+  router.post('/order/getAllOrderList', jwt, controller.order.getAllOrder);
 
   // 评论
   router.get('/getAllCommentByShopId', controller.comment.getAllCommentByShopId);
@@ -55,4 +57,8 @@ module.exports = app => {
   router.post('/user/changePassword', jwt, controller.user.changePassword);
   router.post('/user/getItem', jwt, controller.user.getItem);
   router.post('/user/changeItem', jwt, controller.user.changeUser);
+
+  // 提现
+  router.post('/withdraw/getWithdrawList', jwt, controller.withdraw.getWithdrawList);
+  router.post('/withdraw/isWithdraw', jwt, controller.withdraw.isWithdraw);
 };

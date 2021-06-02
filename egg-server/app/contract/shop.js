@@ -126,6 +126,12 @@ module.exports = {
       required: true,
       example: '',
     },
+    phone: {
+      type: 'string',
+      description: '联系电话',
+      required: true,
+      example: '',
+    },
     category: {
       type: 'string',
       description: '类型',
